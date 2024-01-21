@@ -1,0 +1,20 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <!-- MAIN CONTAINER -->        
+    <div class="rounded-b-md" id="editor"></div>
+    {% if user.is_authenticated %}
+        <div class="mt-5">
+            <form action="" method="post">
+                <button>Save</button>
+            </form>
+        </div>
+    {% else %}
+        <div class="text-center">
+            <button class="mt-5 py-3 px-4 bg-white text-black hover:bg-[#ccc] rounded-md">
+                Please login first to save your diary
+            </button>
+        </div>
+    {% endif %}
+    <!-- END OF MAIN CONTAINER -->
+{% endblock %}
