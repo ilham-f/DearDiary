@@ -14,6 +14,37 @@
       <script src="{% static 'js/main.js' %}"></script>
       <script src="{% static 'js/quill.js' %}"></script>
       <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js" integrity="sha384-3LK/3kTpDE/Pkp8gTNp2gR/2gOiwQ6QaO7Td0zV76UFJVhqLl4Vl3KL1We6q6wR9" crossorigin="anonymous"></script>
+      <style>
+        /* Style for the suggestion container */
+        #suggestions-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Style for the suggestion list */
+        #suggestions-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            z-index: 1;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+            border-top: none;
+        }
+
+        /* Style for each suggestion item */
+        #suggestions-list li {
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        /* Highlight suggestion on hover */
+        #suggestions-list li:hover {
+            background-color: #ddd;
+        }
+      </style>    
     </head>
     <body class="flex flex-col min-h-screen">
         <!-- NAVBAR -->

@@ -1,0 +1,60 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <!-- MAIN CONTAINER -->        
+    
+    <!-- Wrap input and suggestions container in a div -->
+    <div id="suggestions-container">
+        <label for="autocomplete-input">Type a word:</label>
+        <input class="text-black" type="text" id="autocomplete-input">
+        <!-- Suggestions container -->
+        <ul class="text-black" id="suggestions-list"></ul>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#autocomplete-input').on('input', function () {
+                var prefix = $(this).val();
+                $.ajax({
+                    url: '/autocomplete/suggestions/',
+                    data: { 'prefix': prefix },
+                    dataType: 'json',
+                    success: function (data) {
+                        displaySuggestions(data.suggestions);
+                    }
+                });
+            });
+
+            // Function to replace the last word in the input field
+            function replaceLastWord(replacement) {
+                var inputField = $('#autocomplete-input');
+                var currentText = inputField.val();
+                var words = currentText.split(' ');
+
+                if (words.length > 1) {
+                    words[words.length - 1] = replacement;
+                    inputField.val(words.join(' '));
+                } else {
+                    inputField.val(replacement);
+                }
+
+                inputField.focus();
+                $('#suggestions-list').empty(); // Clear suggestions after replacing the word
+            }
+
+            // Function to display suggestions
+            function displaySuggestions(suggestions) {
+                var suggestionsList = $('#suggestions-list');
+                suggestionsList.empty();
+                suggestions.forEach(function (suggestion) {
+                    var li = $('<li>').text(suggestion);
+                    li.on('click', function () {
+                        replaceLastWord(suggestion);
+                    });
+                    suggestionsList.append(li);
+                });
+            }
+        });
+    </script>
+    <!-- END OF MAIN CONTAINER -->
+{% endblock %}

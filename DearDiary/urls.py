@@ -25,6 +25,7 @@ urlpatterns = [
     path('login/', views.login, name='login'),
     path('logout/', views.logout, name='logout'),
     path("", views.home, name='home'),
+    path("input/", views.input, name='input'),
     # path("profile", views.profile, name='profile'),
-    path("watch/<int:anime_id>/", views.watch),
+    path('autocomplete/suggestions/', views.get_autocomplete_suggestions, name='get_autocomplete_suggestions'),
 ]

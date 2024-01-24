@@ -1,9 +1,11 @@
 from django.shortcuts import get_object_or_404, redirect, render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.forms import AuthenticationForm
+
+from DearDiary.autocomplete_ai import AutocompleteAI
 from .forms import UserCreationForm
 from django.db.models import Count, Avg
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -53,10 +55,42 @@ def logout(request):
 
 # def profile(request):
 #     return render(request,'home.html')
+def get_autocomplete_suggestions(request):
+    prefix = request.GET.get('prefix', '')
+    
+    autocomplete_ai = AutocompleteAI()  # Initialize or get an instance of AutocompleteAI
+
+    file_path = 'indonesian_words.txt'
+
+    # Read the content of the text file and store each line as a string in a list
+    with open(file_path, 'r') as txt_file:
+        lines = txt_file.readlines()
+
+    # Strip leading and trailing whitespaces from each line
+    lines = [line.strip() for line in lines]
+    
+    # Assuming you have a dataset of Indonesian words
+    indonesian_words = lines 
+
+    for word in indonesian_words:
+        autocomplete_ai.insert(word)
+
+    # Split the sentence into words and get the last word
+    words = prefix.split()
+    if words:
+        last_word = words[-1]
+        suggestions = autocomplete_ai.search(last_word)
+        print(f"Autocomplete suggestions for '{last_word}': {suggestions}")
+
+    data = {
+        'suggestions': suggestions,
+    }
+    
+    print(f"Prefix: {prefix}, Suggestions: {suggestions}")
+    return JsonResponse(data)
     
 def home(request):
     user = request.user
-
     # context = {
     #     'trending': trendingAnimes,
     #     'genreRecs': genre_recommendations,
@@ -65,6 +99,9 @@ def home(request):
     #     'watched': watched
     # }
     return render(request,'home.html')
+
+def input(request):
+    return render(request,'input.html')
 
 @login_required
 def watch(request, anime_id):

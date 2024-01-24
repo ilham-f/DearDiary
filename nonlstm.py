@@ -37,7 +37,7 @@ class AutocompleteAI:
 # Example usage:
 autocomplete_ai = AutocompleteAI()
 
-file_path = 'indonesian-words.txt'
+file_path = 'indonesian_words.txt'
 
 # Read the content of the text file and store each line as a string in a list
 with open(file_path, 'r') as txt_file:
@@ -46,7 +46,7 @@ with open(file_path, 'r') as txt_file:
 # Strip leading and trailing whitespaces from each line
 lines = [line.strip() for line in lines]
 
-print(lines)
+# print(lines)
 
 # Assuming you have a dataset of Indonesian words
 indonesian_words = lines 
