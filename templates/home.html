@@ -2,7 +2,10 @@
 
 {% block content %}
     <!-- MAIN CONTAINER -->        
-    <div class="rounded-b-md" id="editor"></div>
+    <div id="suggestions-container" class="w-full">
+        <textarea class="rounded-b-md w-full p-1 text-white bg-black" id="autocomplete-input"></textarea>
+        <ul class="text-black" id="suggestions-list"></ul>
+    </div>
     {% if user.is_authenticated %}
         <div class="mt-5">
             <form action="" method="post">
@@ -17,4 +20,49 @@
         </div>
     {% endif %}
     <!-- END OF MAIN CONTAINER -->
+    <script>
+        $(document).ready(function () {
+            $('#autocomplete-input').on('input', function () {
+                var prefix = $(this).val();
+                $.ajax({
+                    url: '/autocomplete/suggestions/',
+                    data: { 'prefix': prefix },
+                    dataType: 'json',
+                    success: function (data) {
+                        displaySuggestions(data.suggestions);
+                    }
+                });
+            });
+
+            // Function to replace the last word in the input field
+            function replaceLastWord(replacement) {
+                var inputField = $('#autocomplete-input');
+                var currentText = inputField.val();
+                var words = currentText.split(' ');
+
+                if (words.length > 1) {
+                    words[words.length - 1] = replacement;
+                    inputField.val(words.join(' '));
+                } else {
+                    inputField.val(replacement);
+                }
+
+                inputField.focus();
+                $('#suggestions-list').empty(); // Clear suggestions after replacing the word
+            }
+
+            // Function to display suggestions
+            function displaySuggestions(suggestions) {
+                var suggestionsList = $('#suggestions-list');
+                suggestionsList.empty();
+                suggestions.forEach(function (suggestion) {
+                    var li = $('<li>').text(suggestion);
+                    li.on('click', function () {
+                        replaceLastWord(suggestion);
+                    });
+                    suggestionsList.append(li);
+                });
+            }
+        });
+    </script>
 {% endblock %}
