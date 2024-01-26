@@ -11,7 +11,7 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 nltk.download('averaged_perceptron_tagger')
 
 # Read the content of the text file
-file_path = 'indonesian-words.txt'
+file_path = 'indonesian_words.txt'
 with open(file_path, 'r', encoding='utf-8') as file:
     indonesian_words = [word.strip() for word in file.readlines()]
 
