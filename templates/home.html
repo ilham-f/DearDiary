@@ -29,40 +29,45 @@
                     data: { 'prefix': prefix },
                     dataType: 'json',
                     success: function (data) {
-                        displaySuggestions(data.suggestions);
+                        console.log(data);
+                        displaySuggestions(data);
                     }
                 });
             });
-
+    
             // Function to replace the last word in the input field
             function replaceLastWord(replacement) {
                 var inputField = $('#autocomplete-input');
                 var currentText = inputField.val();
                 var words = currentText.split(' ');
-
+    
                 if (words.length > 1) {
                     words[words.length - 1] = replacement;
                     inputField.val(words.join(' '));
                 } else {
                     inputField.val(replacement);
                 }
-
+    
                 inputField.focus();
                 $('#suggestions-list').empty(); // Clear suggestions after replacing the word
             }
-
+    
             // Function to display suggestions
             function displaySuggestions(suggestions) {
                 var suggestionsList = $('#suggestions-list');
                 suggestionsList.empty();
-                suggestions.forEach(function (suggestion) {
-                    var li = $('<li>').text(suggestion);
+    
+                // Split suggestions into words and iterate
+                console.log(suggestions);
+                var words = suggestions.split(' ');
+                words.forEach(function (word) {
+                    var li = $('<li>').text(word);
                     li.on('click', function () {
-                        replaceLastWord(suggestion);
+                        replaceLastWord(word);
                     });
                     suggestionsList.append(li);
                 });
             }
         });
-    </script>
+    </script>    
 {% endblock %}

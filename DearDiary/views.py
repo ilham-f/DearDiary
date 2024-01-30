@@ -154,13 +154,6 @@ def get_lstm_suggestions(request):
     
 def home(request):
     user = request.user
-    # context = {
-    #     'trending': trendingAnimes,
-    #     'genreRecs': genre_recommendations,
-    #     'anime_title': anime_title,
-    #     'auth_user': auth_user,
-    #     'watched': watched
-    # }
     return render(request,'home.html')
 
 def input(request):

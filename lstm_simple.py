@@ -41,7 +41,7 @@ model.add(LSTM(150))
 model.add(Dense(vocab_size, activation='softmax'))
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 model.fit(X, y, epochs=100, verbose=2)
-# model.save('lstm_autocomplete.keras')
+model.save('lstm_autocomplete.keras')
 
 # with open('tokenizer.pkl', 'wb') as f:
 #     pickle.dump(tokenizer, f)
