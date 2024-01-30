@@ -27,5 +27,6 @@ urlpatterns = [
     path("", views.home, name='home'),
     path("input/", views.input, name='input'),
     # path("profile", views.profile, name='profile'),
-    path('autocomplete/suggestions/', views.get_autocomplete_suggestions, name='get_autocomplete_suggestions'),
+    # path('autocomplete/suggestions/', views.get_autocomplete_suggestions, name='get_autocomplete_suggestions'),
+    path('lstm/suggestions/', views.get_lstm_suggestions, name='get_lstm_suggestions'),
 ]

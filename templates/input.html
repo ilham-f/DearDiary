@@ -16,7 +16,7 @@
             $('#autocomplete-input').on('input', function () {
                 var prefix = $(this).val();
                 $.ajax({
-                    url: '/autocomplete/suggestions/',
+                    url: '/lstm/suggestions',
                     data: { 'prefix': prefix },
                     dataType: 'json',
                     success: function (data) {

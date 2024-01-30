@@ -3,6 +3,7 @@ from keras.models import Sequential
 from keras.layers import LSTM, Dense, Embedding
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
+import pickle
 
 # Membaca file teks
 file_path = "kalimat_diary.txt"
@@ -40,25 +41,28 @@ model.add(LSTM(150))
 model.add(Dense(vocab_size, activation='softmax'))
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 model.fit(X, y, epochs=100, verbose=2)
-model.save('lstm_autocomplete.keras')
+# model.save('lstm_autocomplete.keras')
+
+# with open('tokenizer.pkl', 'wb') as f:
+#     pickle.dump(tokenizer, f)
 
 # Fungsi untuk menghasilkan teks berikutnya berdasarkan teks input
-# def generate_text(seed_text, next_words, model, max_sequence_len):
-#     for _ in range(next_words):
-#         token_list = tokenizer.texts_to_sequences([seed_text])[0]
-#         token_list = pad_sequences([token_list], maxlen=max_sequence_len-1, padding='pre')
-#         predicted_probs = model.predict(token_list, verbose=0)[0]
-#         predicted = np.argmax(predicted_probs)
-#         output_word = ""
-#         for word, index in tokenizer.word_index.items():
-#             if index == predicted:
-#                 output_word = word
-#                 break
-#         seed_text += " " + output_word
-#     return seed_text
+def generate_text(seed_text, next_words, model, max_sequence_len):
+    for _ in range(next_words):
+        token_list = tokenizer.texts_to_sequences([seed_text])[0]
+        token_list = pad_sequences([token_list], maxlen=max_sequence_len-1, padding='pre')
+        predicted_probs = model.predict(token_list, verbose=0)[0]
+        predicted = np.argmax(predicted_probs)
+        output_word = ""
+        for word, index in tokenizer.word_index.items():
+            if index == predicted:
+                output_word = word
+                break
+        seed_text += " " + output_word
+    return seed_text
 
-# # Contoh penggunaan model untuk menghasilkan teks berikutnya
-# seed_text = "Saya merasa"
-# next_words = 5
-# generated_text = generate_text(seed_text, next_words, model, max_sequence_len)
-# print(generated_text)
+# Contoh penggunaan model untuk menghasilkan teks berikutnya
+seed_text = "Saya merasa"
+next_words = 5
+generated_text = generate_text(seed_text, next_words, model, max_sequence_len)
+print(generated_text)
